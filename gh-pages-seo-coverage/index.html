@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Visor de planes de desarrollo SEO Coverage Engine — render tipo PDF desde Markdown publicados en GitHub Pages." />
+  <meta name="theme-color" content="#0f766e" />
+  <title>SEO Coverage Engine — Planes de desarrollo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js" defer></script>
+  <style>
+    :root {
+      --ink: #14201c;
+      --muted: #5b6b64;
+      --line: #d7e2dc;
+      --paper: #fffcf7;
+      --paper-edge: #e8efe9;
+      --bg: #eef4f1;
+      --bg-deep: #d9e8e2;
+      --teal: #0f766e;
+      --teal-deep: #115e59;
+      --teal-soft: #ccfbf1;
+      --amber: #b45309;
+      --danger: #b91c1c;
+      --shadow: 0 18px 50px rgba(20, 32, 28, 0.12);
+      --radius: 14px;
+      --rail: 300px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, rgba(15, 118, 110, 0.12), transparent 60%),
+        radial-gradient(900px 420px at 100% 0%, rgba(180, 83, 9, 0.08), transparent 55%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--teal); }
+    button, select { font: inherit; }
+
+    .shell {
+      width: min(1280px, calc(100% - 24px));
+      margin: 18px auto 40px;
+      display: grid;
+      grid-template-columns: var(--rail) minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .rail, .stage {
+      background: rgba(255, 252, 247, 0.72);
+      border: 1px solid rgba(215, 226, 220, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .rail {
+      position: sticky;
+      top: 14px;
+      padding: 18px 16px 16px;
+    }
+
+    .brand {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand__eyebrow {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .brand__title {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .brand__sub {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .field label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .field select {
+      width: 100%;
+      appearance: none;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235b6b64' d='M1 1l5 5 5-5'/%3E%3C/svg%3E") no-repeat right 12px center;
+      padding: 11px 34px 11px 12px;
+      color: var(--ink);
+      outline: none;
+    }
+    .field select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+    }
+
+    .actions {
+      display: grid;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn--primary {
+      background: var(--teal);
+      color: #fff;
+    }
+    .btn--primary:hover { background: var(--teal-deep); }
+    .btn--ghost {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--ink);
+    }
+    .btn--ghost:hover { border-color: var(--teal); color: var(--teal-deep); }
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .meta {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .meta a { font-weight: 600; word-break: break-all; }
+    .status {
+      margin: 0;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--teal-soft);
+      color: var(--teal-deep);
+      font-weight: 600;
+    }
+    .status.is-error {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+    .status.is-idle {
+      background: #f1f5f4;
+      color: var(--muted);
+    }
+
+    .plan-list {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 6px;
+    }
+    .plan-list button {
+      width: 100%;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px 11px;
+      cursor: pointer;
+      color: var(--ink);
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .plan-list button:hover,
+    .plan-list button.is-active {
+      border-color: var(--teal);
+      background: #f0fdfa;
+    }
+    .plan-list__name {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .plan-list__file {
+      display: block;
+      margin-top: 2px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", monospace;
+      word-break: break-all;
+    }
+
+    .stage {
+      padding: 18px 18px 28px;
+      min-height: 70vh;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .toolbar__title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .toolbar__hint {
+      margin: 2px 0 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .paper-wrap {
+      background:
+        linear-gradient(90deg, rgba(20, 32, 28, 0.04), transparent 18px),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 24px,
+          rgba(20, 32, 28, 0.03) 24px,
+          rgba(20, 32, 28, 0.03) 25px
+        );
+      border-radius: 12px;
+      padding: 18px 12px 28px;
+      overflow: auto;
+    }
+
+    .paper {
+      width: min(794px, 100%);
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid var(--paper-edge);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.8) inset,
+        0 22px 50px rgba(20, 32, 28, 0.14);
+      min-height: 1120px;
+      padding: 54px 58px 70px;
+      position: relative;
+    }
+    .paper::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(15, 118, 110, 0.12);
+      pointer-events: none;
+    }
+
+    .paper__header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--teal);
+    }
+    .paper__kicker {
+      margin: 0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+    .paper__doc-title {
+      margin: 4px 0 0;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 1.55rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .paper__meta {
+      text-align: right;
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .md {
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 1.02rem;
+      line-height: 1.65;
+      color: var(--ink);
+    }
+    .md > *:first-child { margin-top: 0; }
+    .md h1, .md h2, .md h3, .md h4 {
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      color: var(--ink);
+    }
+    .md h1 { font-size: 1.55rem; margin: 1.4em 0 0.55em; }
+    .md h2 {
+      font-size: 1.22rem;
+      margin: 1.45em 0 0.5em;
+      padding-bottom: 0.25em;
+      border-bottom: 1px solid var(--line);
+    }
+    .md h3 { font-size: 1.05rem; margin: 1.2em 0 0.4em; color: var(--teal-deep); }
+    .md p, .md ul, .md ol { margin: 0.7em 0; }
+    .md ul, .md ol { padding-left: 1.25em; }
+    .md li { margin: 0.25em 0; }
+    .md a { word-break: break-word; }
+    .md code {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.86em;
+      background: #f1f5f4;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 0.08em 0.35em;
+    }
+    .md pre {
+      overflow: auto;
+      background: #12201c;
+      color: #e7f5ef;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+    .md pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+    .md blockquote {
+      margin: 1em 0;
+      padding: 0.2em 0 0.2em 1em;
+      border-left: 3px solid var(--teal);
+      color: var(--muted);
+    }
+    .md table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      font-size: 0.88rem;
+      margin: 1em 0;
+    }
+    .md th, .md td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .md th {
+      background: #f0fdfa;
+      font-weight: 700;
+    }
+    .md hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 1.6em 0;
+    }
+    .md .mermaid {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      overflow: auto;
+      margin: 1em 0;
+    }
+    .frontmatter {
+      margin: 0 0 1.2em;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: #f7faf8;
+      border: 1px dashed var(--line);
+      font-family: "IBM Plex Sans", system-ui, sans-serif;
+      font-size: 0.84rem;
+    }
+    .frontmatter strong { color: var(--teal-deep); }
+
+    .empty {
+      display: grid;
+      place-items: center;
+      min-height: 50vh;
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 20px;
+    }
+    .empty strong {
+      display: block;
+      color: var(--ink);
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    @media (max-width: 920px) {
+      .shell {
+        grid-template-columns: 1fr;
+        margin-top: 12px;
+      }
+      .rail { position: static; }
+      .paper {
+        padding: 36px 22px 48px;
+        min-height: auto;
+      }
+      .paper::before { inset: 10px; }
+      .paper__header { flex-direction: column; }
+      .paper__meta { text-align: left; }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+      .rail, .toolbar, .shell { box-shadow: none; }
+      .shell {
+        width: 100%;
+        margin: 0;
+        display: block;
+      }
+      .rail { display: none !important; }
+      .stage {
+        border: none;
+        background: transparent;
+        padding: 0;
+        box-shadow: none;
+      }
+      .paper-wrap {
+        background: none;
+        padding: 0;
+      }
+      .paper {
+        width: 100%;
+        min-height: auto;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+      }
+      .paper::before { display: none; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="rail" aria-label="Selector de planes">
+      <div class="brand">
+        <p class="brand__eyebrow">SEO Coverage Engine</p>
+        <h1 class="brand__title">Planes de desarrollo</h1>
+        <p class="brand__sub">Selecciona un <code>.md</code> publicado en GitHub Pages y visualízalo como documento / PDF.</p>
+      </div>
+
+      <div class="field">
+        <label for="planSelect">Plan publicado</label>
+        <select id="planSelect"></select>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn--primary" id="btnLoad">Cargar plan</button>
+        <button type="button" class="btn btn--ghost" id="btnPrint" disabled>Imprimir / Guardar PDF</button>
+        <button type="button" class="btn btn--ghost" id="btnOpenRaw" disabled>Abrir Markdown crudo</button>
+      </div>
+
+      <ul class="plan-list" id="planList" aria-label="Atajos de planes"></ul>
+
+      <div class="meta">
+        <p class="status is-idle" id="status">Elige un plan para comenzar.</p>
+        <div>
+          Repo:
+          <a href="https://github.com/wbsckt3/seo_coverage_engine" target="_blank" rel="noopener">wbsckt3/seo_coverage_engine</a>
+        </div>
+        <div>
+          Pages:
+          <a href="https://wbsckt3.github.io/seo_coverage_engine/" target="_blank" rel="noopener">wbsckt3.github.io/seo_coverage_engine</a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="stage" aria-live="polite">
+      <div class="toolbar">
+        <div>
+          <h2 class="toolbar__title" id="docTitle">Vista documento</h2>
+          <p class="toolbar__hint">Render Markdown → hoja tipo PDF. Usa “Imprimir / Guardar PDF” del navegador.</p>
+        </div>
+      </div>
+
+      <div class="paper-wrap">
+        <article class="paper" id="paper">
+          <div class="empty" id="emptyState">
+            <div>
+              <strong>Ningún plan cargado</strong>
+              Selecciona un archivo <code>.plan.md</code> del panel izquierdo.
+            </div>
+          </div>
+          <header class="paper__header" id="paperHeader" hidden>
+            <div>
+              <p class="paper__kicker">Plan de desarrollo</p>
+              <h2 class="paper__doc-title" id="paperTitle">—</h2>
+            </div>
+            <div class="paper__meta" id="paperMeta"></div>
+          </header>
+          <div class="md" id="mdRoot" hidden></div>
+        </article>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const REPO_PAGES = 'https://wbsckt3.github.io/DevCoveragePlansEngine/gh-pages-seo-coverage'
+      const REPO_RAW = 'https://raw.githubusercontent.com/wbsckt3/DevCoveragePlansEngine/gh-pages/gh-pages-seo-coverage'
+      const REPO_BLOB = 'https://github.com/wbsckt3/DevCoveragePlansEngine/blob/gh-pages/gh-pages-seo-coverage'
+
+      const PLANS = [
+        // Planes “como se implementó” (fuente local de este folder / Pages)
+        {
+          file: 'seo_coverage_fase_1_implementado.plan.md',
+          label: '✓ Fase 1 — Implementado'
+        },
+        {
+          file: 'seo_fase_2-3_implementado.plan.md',
+          label: '✓ Fase 2–3 — Implementado'
+        },
+        {
+          file: 'seo_producto_i18n_epayco_ui.plan.md',
+          label: '✓ Producto i18n + ePayco + UI móvil'
+        },
+        {
+          file: 'alineacion_vision_seo_00e0955d.plan.md',
+          label: 'Alineación visión SEO'
+        },
+        // Borradores originales publicados en el repo
+        {
+          file: 'seo_coverage_fase_1_712d4cf0.plan.md',
+          label: 'Fase 1 MVP (borrador 712d4cf0)'
+        },
+        {
+          file: 'seo_coverage_fase_1_ec092e92.plan.md',
+          label: 'Fase 1 MVP (borrador ec092e92)'
+        },
+        {
+          file: 'seo_fase_2-3_4a7371b8.plan.md',
+          label: 'Fase 2–3 (borrador 4a7371b8)'
+        },
+        {
+          file: 'seo_fase_2-3_f8e0c4e1.plan.md',
+          label: 'Fase 2–3 (borrador f8e0c4e1)'
+        }
+      ]
+
+      const els = {
+        select: document.getElementById('planSelect'),
+        list: document.getElementById('planList'),
+        status: document.getElementById('status'),
+        btnLoad: document.getElementById('btnLoad'),
+        btnPrint: document.getElementById('btnPrint'),
+        btnOpenRaw: document.getElementById('btnOpenRaw'),
+        empty: document.getElementById('emptyState'),
+        header: document.getElementById('paperHeader'),
+        title: document.getElementById('paperTitle'),
+        meta: document.getElementById('paperMeta'),
+        md: document.getElementById('mdRoot'),
+        docTitle: document.getElementById('docTitle')
+      }
+
+      let currentFile = ''
+      let currentRawUrl = ''
+
+      function setStatus(text, kind) {
+        els.status.textContent = text
+        els.status.className = 'status' + (kind ? ' is-' + kind : '')
+      }
+
+      function candidateUrls(file) {
+        const relative = './' + encodeURI(file)
+        const pages = REPO_PAGES + '/' + encodeURI(file)
+        const raw = REPO_RAW + '/' + encodeURI(file)
+        // En Pages prioriza mismo origen; en local usa raw (CORS OK).
+        const onPages = /wbsckt3\.github\.io\/DevCoveragePlansEngine/i.test(location.href)
+        return onPages ? [relative, pages, raw] : [raw, pages, relative]
+      }
+
+      async function fetchText(urls) {
+        let lastErr = null
+        for (const url of urls) {
+          try {
+            const res = await fetch(url, { cache: 'no-store' })
+            if (!res.ok) {
+              lastErr = new Error('HTTP ' + res.status + ' · ' + url)
+              continue
+            }
+            const text = await res.text()
+            return { text, url }
+          } catch (e) {
+            lastErr = e
+          }
+        }
+        throw lastErr || new Error('No se pudo cargar el archivo')
+      }
+
+      function splitFrontmatter(src) {
+        if (!src.startsWith('---')) return { meta: null, body: src }
+        const end = src.indexOf('\n---', 3)
+        if (end === -1) return { meta: null, body: src }
+        const rawMeta = src.slice(3, end).trim()
+        const body = src.slice(end + 4).replace(/^\s+/, '')
+        const meta = {}
+        rawMeta.split(/\r?\n/).forEach((line) => {
+          const m = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/)
+          if (!m) return
+          let v = m[2].trim()
+          if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+            v = v.slice(1, -1)
+          }
+          meta[m[1]] = v
+        })
+        return { meta, body }
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+      }
+
+      function prepareMermaid(md) {
+        // Convert ```mermaid blocks into div.mermaid for mermaid.js
+        return md.replace(/```mermaid\s*([\s\S]*?)```/gi, (_, code) => {
+          return '<div class="mermaid">\n' + code.trim() + '\n</div>'
+        })
+      }
+
+      function renderMarkdown(body) {
+        if (typeof marked === 'undefined') {
+          return '<pre>' + escapeHtml(body) + '</pre>'
+        }
+        marked.setOptions({
+          gfm: true,
+          breaks: false
+        })
+        const withMermaid = prepareMermaid(body)
+        // If mermaid was converted to HTML divs, marked will escape them unless we protect.
+        // So: extract mermaid placeholders, parse MD, restore.
+        const blocks = []
+        const protectedMd = withMermaid.replace(/<div class="mermaid">[\s\S]*?<\/div>/g, (block) => {
+          const i = blocks.length
+          blocks.push(block)
+          return '\n\nMERMAID_BLOCK_' + i + '\n\n'
+        })
+        let html = marked.parse(protectedMd)
+        blocks.forEach((block, i) => {
+          html = html.replace(
+            new RegExp('<p>MERMAID_BLOCK_' + i + '<\\/p>|MERMAID_BLOCK_' + i, 'g'),
+            block
+          )
+        })
+        return html
+      }
+
+      async function runMermaid() {
+        if (typeof mermaid === 'undefined') return
+        try {
+          mermaid.initialize({
+            startOnLoad: false,
+            theme: 'neutral',
+            securityLevel: 'loose',
+            fontFamily: 'IBM Plex Sans'
+          })
+          const nodes = els.md.querySelectorAll('.mermaid')
+          if (!nodes.length) return
+          await mermaid.run({ nodes })
+        } catch (e) {
+          console.warn('mermaid', e)
+        }
+      }
+
+      function markActive(file) {
+        els.list.querySelectorAll('button').forEach((btn) => {
+          btn.classList.toggle('is-active', btn.dataset.file === file)
+        })
+        els.select.value = file
+      }
+
+      async function loadPlan(file) {
+        if (!file) return
+        currentFile = file
+        markActive(file)
+        setStatus('Cargando ' + file + '…', 'idle')
+        els.btnLoad.disabled = true
+        els.btnPrint.disabled = true
+        els.btnOpenRaw.disabled = true
+
+        try {
+          const { text, url } = await fetchText(candidateUrls(file))
+          currentRawUrl = url
+          const { meta, body } = splitFrontmatter(text)
+          const plan = PLANS.find((p) => p.file === file)
+          const title =
+            (meta && (meta.name || meta.title)) ||
+            (plan && plan.label) ||
+            file.replace(/\.md$/i, '')
+
+          els.empty.hidden = true
+          els.header.hidden = false
+          els.md.hidden = false
+          els.title.textContent = title
+          els.docTitle.textContent = title
+          els.meta.innerHTML =
+            '<div>' + escapeHtml(file) + '</div>' +
+            '<div>' + new Date().toLocaleString('es-CO') + '</div>' +
+            (meta && meta.overview
+              ? '<div style="margin-top:6px;max-width:220px">' + escapeHtml(meta.overview.slice(0, 160)) + (meta.overview.length > 160 ? '…' : '') + '</div>'
+              : '')
+
+          let fmHtml = ''
+          if (meta && (meta.name || meta.overview)) {
+            fmHtml =
+              '<div class="frontmatter">' +
+              (meta.name ? '<div><strong>Nombre:</strong> ' + escapeHtml(meta.name) + '</div>' : '') +
+              (meta.overview ? '<div><strong>Overview:</strong> ' + escapeHtml(meta.overview) + '</div>' : '') +
+              '</div>'
+          }
+
+          els.md.innerHTML = fmHtml + renderMarkdown(body)
+          await runMermaid()
+
+          els.btnPrint.disabled = false
+          els.btnOpenRaw.disabled = false
+          setStatus('Cargado desde ' + url, '')
+        } catch (e) {
+          els.empty.hidden = false
+          els.header.hidden = true
+          els.md.hidden = true
+          els.md.innerHTML = ''
+          setStatus('Error: ' + (e && e.message ? e.message : e), 'error')
+        } finally {
+          els.btnLoad.disabled = false
+        }
+      }
+
+      function initUi() {
+        PLANS.forEach((p, i) => {
+          const opt = document.createElement('option')
+          opt.value = p.file
+          opt.textContent = p.label
+          els.select.appendChild(opt)
+
+          const li = document.createElement('li')
+          const btn = document.createElement('button')
+          btn.type = 'button'
+          btn.dataset.file = p.file
+          btn.innerHTML =
+            '<span class="plan-list__name">' + escapeHtml(p.label) + '</span>' +
+            '<span class="plan-list__file">' + escapeHtml(p.file) + '</span>'
+          btn.addEventListener('click', () => loadPlan(p.file))
+          li.appendChild(btn)
+          els.list.appendChild(li)
+
+          if (i === 0) els.select.value = p.file
+        })
+
+        els.btnLoad.addEventListener('click', () => loadPlan(els.select.value))
+        els.select.addEventListener('change', () => loadPlan(els.select.value))
+        els.btnPrint.addEventListener('click', () => window.print())
+        els.btnOpenRaw.addEventListener('click', () => {
+          const file = currentFile || els.select.value
+          const url = currentRawUrl || (REPO_BLOB + '/' + encodeURI(file))
+          window.open(url, '_blank', 'noopener')
+        })
+
+        const hash = decodeURIComponent((location.hash || '').replace(/^#/, ''))
+        const fromQuery = new URLSearchParams(location.search).get('plan')
+        const initial = PLANS.find((p) => p.file === hash || p.file === fromQuery)
+        if (initial) loadPlan(initial.file)
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initUi)
+      } else {
+        initUi()
+      }
+
+      window.addEventListener('load', () => {
+        // marked/mermaid defer — reintento suave si el usuario ya eligió
+        if (currentFile && els.md && !els.md.hidden && els.md.childElementCount === 0) {
+          loadPlan(currentFile)
+        }
+      })
+    })()
+  </script>
+</body>
+</html>

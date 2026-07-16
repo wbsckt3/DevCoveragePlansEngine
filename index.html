@@ -1,0 +1,817 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="DevCoveragePlansEngine documenta el proceso de desarrollo y los planes PDF de cada white label P2L." data-i18n-meta="meta.description" />
+  <meta name="theme-color" content="#0d9488" />
+  <title data-i18n="meta.title">DevCoveragePlansEngine — Cobertura de planes white-label</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --teal-50: #f0fdfa;
+      --teal-100: #ccfbf1;
+      --teal-200: #99f6e4;
+      --teal-500: #14b8a6;
+      --teal-600: #0d9488;
+      --teal-700: #0f766e;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --white: #ffffff;
+      --shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
+      --radius: 16px;
+      --header-h: 72px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: var(--white);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    .container { width: min(1140px, calc(100% - 32px)); margin-inline: auto; }
+
+    .site-header {
+      position: fixed; inset: 0 0 auto 0; z-index: 100; height: var(--header-h);
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .site-header.is-scrolled {
+      border-color: var(--line);
+      box-shadow: 0 8px 24px rgba(15,23,42,0.06);
+    }
+    .site-header__inner {
+      height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand {
+      display: flex; flex-direction: column; gap: 2px; line-height: 1.15;
+      font-weight: 800; letter-spacing: -0.03em;
+    }
+    .brand__name { font-size: 1.05rem; color: var(--ink); }
+    .brand__name span { color: var(--teal-600); }
+    .brand__tag {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    .nav { display: flex; align-items: center; gap: 8px; }
+    .nav a {
+      padding: 8px 12px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; color: var(--muted);
+    }
+    .nav a:hover { color: var(--ink); background: var(--teal-50); }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; border-radius: 999px; font-weight: 700; font-size: 0.95rem;
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn--primary {
+      background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
+      color: #fff; box-shadow: 0 10px 28px rgba(13,148,136,0.35);
+    }
+    .btn--outline {
+      border: 2px solid var(--teal-200); color: var(--teal-700); background: #fff;
+    }
+    .btn--outline:hover { background: var(--teal-50); }
+    .btn--ghost { color: var(--teal-700); background: var(--teal-50); }
+    .btn--lg { padding: 14px 28px; font-size: 1rem; }
+    .btn.is-active {
+      background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
+      color: #fff; border-color: transparent;
+      box-shadow: 0 10px 28px rgba(13,148,136,0.35);
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 12px; }
+    .qa-lang-switch {
+      display: inline-flex; gap: 4px; padding: 3px; border-radius: 10px;
+      background: #f1f5f9; border: 1px solid #e2e8f0;
+    }
+    .qa-lang-switch__btn {
+      min-width: 2.25rem; padding: 6px 10px; border: none; border-radius: 8px;
+      background: transparent; font-size: 0.78rem; font-weight: 800; color: #64748b; cursor: pointer;
+    }
+    .qa-lang-switch__btn--active {
+      background: #0d9488; color: #fff;
+      box-shadow: 0 2px 8px rgba(13,148,136,0.35);
+    }
+    .menu-toggle {
+      display: none; width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--line);
+      align-items: center; justify-content: center; font-size: 1.25rem;
+    }
+
+    .hero {
+      padding: calc(var(--header-h) + 48px) 0 64px;
+      background:
+        radial-gradient(ellipse 80% 60% at 100% 0%, rgba(20,184,166,0.18), transparent 60%),
+        radial-gradient(ellipse 60% 50% at 0% 100%, rgba(13,148,136,0.12), transparent 55%),
+        linear-gradient(180deg, #f8fffe 0%, #ffffff 100%);
+    }
+    .hero__eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px;
+      background: var(--teal-50); border: 1px solid var(--teal-200); color: var(--teal-700);
+      font-size: 0.82rem; font-weight: 700; margin-bottom: 18px;
+    }
+    .hero__title {
+      margin: 0 0 16px; font-size: clamp(2rem, 4.5vw, 3.1rem);
+      line-height: 1.1; letter-spacing: -0.03em; font-weight: 800; max-width: 18ch;
+    }
+    .hero__title em { font-style: normal; color: var(--teal-600); }
+    .hero__lead {
+      margin: 0 0 28px; font-size: clamp(1rem, 2vw, 1.12rem); color: var(--muted); max-width: 40rem;
+    }
+    .hero__ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+    .hero__badges { display: flex; flex-wrap: wrap; gap: 10px; }
+    .hero__badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 12px;
+      background: #fff; border: 1px solid var(--line); font-size: 0.82rem; font-weight: 600; color: var(--muted);
+    }
+    .hero__badge strong { color: var(--ink); }
+
+    .wl-chip {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
+      background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0;
+    }
+
+    .section { padding: 64px 0; }
+    .section--alt { background: #f8fafc; }
+    .section__head { text-align: center; max-width: 640px; margin: 0 auto 36px; }
+    .section__head h2 {
+      margin: 0 0 10px; font-size: clamp(1.55rem, 3vw, 2.1rem); letter-spacing: -0.02em;
+    }
+    .section__head p { margin: 0; color: var(--muted); }
+
+    .cards {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    }
+    .card {
+      padding: 24px; border-radius: var(--radius); background: #fff;
+      border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(15,23,42,0.04);
+    }
+    .card__icon {
+      width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+      background: var(--teal-50); margin-bottom: 14px; font-size: 1.25rem;
+    }
+    .card h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    .card p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+
+    .phase {
+      padding: 22px; border-radius: var(--radius); background: #fff; border: 1px solid var(--line);
+      display: flex; flex-direction: column; gap: 8px; min-height: 150px;
+    }
+    .phase__tag {
+      align-self: flex-start; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--teal-700); background: var(--teal-50);
+      padding: 4px 10px; border-radius: 999px;
+    }
+    .phase h3 { margin: 0; font-size: 1.05rem; }
+    .phase p { margin: 0; color: var(--muted); font-size: 0.92rem; flex: 1; }
+
+    .cta-box {
+      text-align: center; padding: 48px 24px; border-radius: 24px;
+      background: radial-gradient(circle at 20% 20%, rgba(20,184,166,0.15), transparent 50%), #f0fdfa;
+      border: 1px solid var(--teal-100);
+    }
+    .cta-box h2 { margin: 0 0 10px; font-size: clamp(1.4rem, 3vw, 1.9rem); }
+    .cta-box p { margin: 0 auto 22px; color: var(--muted); max-width: 540px; }
+    .cta-box__actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+    .mode-panel[hidden] { display: none !important; }
+
+    .footer {
+      background: #0f172a; color: #cbd5e1; padding: 40px 0 24px; font-size: 0.9rem;
+    }
+    .footer__grid {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 28px; margin-bottom: 28px;
+    }
+    .footer h4 { margin: 0 0 12px; color: #fff; font-size: 0.95rem; }
+    .footer ul { list-style: none; margin: 0; padding: 0; }
+    .footer li { margin-bottom: 8px; }
+    .footer a { color: #94a3b8; }
+    .footer a:hover { color: #fff; }
+    .footer__brand { font-weight: 800; color: #fff; font-size: 1.05rem; margin-bottom: 10px; }
+    .footer__copy {
+      padding-top: 18px; border-top: 1px solid #1e293b; color: #64748b;
+      font-size: 0.82rem; text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .cards { grid-template-columns: 1fr; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+      .hero__title { max-width: none; }
+    }
+    @media (max-width: 720px) {
+      .nav {
+        display: none; position: absolute; top: var(--header-h); left: 0; right: 0;
+        flex-direction: column; align-items: stretch; padding: 12px 16px 16px;
+        background: #fff; border-bottom: 1px solid var(--line);
+        box-shadow: 0 12px 32px rgba(15,23,42,0.08);
+      }
+      .nav.is-open { display: flex; }
+      .nav a, .nav .btn { width: 100%; justify-content: center; }
+      .menu-toggle { display: inline-flex; }
+      .header-cta-desktop { display: none; }
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 721px) {
+      .nav-cta-mobile { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="header">
+    <div class="container site-header__inner">
+      <a href="#" class="brand" data-mode="seo" data-i18n-aria="nav.home" aria-label="DevCoveragePlansEngine inicio">
+        <span class="brand__name">Dev<span>Coverage</span>PlansEngine</span>
+        <span class="brand__tag">Dev Hub plans coverage</span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" type="button" data-i18n-aria="nav.menu_open" aria-label="Abrir menú" aria-expanded="false">☰</button>
+
+      <nav class="nav" id="mainNav" data-i18n-aria="nav.main" aria-label="Principal">
+        <a href="#seo-overview" data-nav="overview" data-i18n="nav.overview">Visión</a>
+        <a href="#seo-process" data-nav="process" data-i18n="nav.process">Proceso</a>
+        <a href="#seo-cta" data-nav="cta" data-i18n="nav.open_architecture">Ver arquitectura</a>
+        <a class="btn btn--ghost nav-cta-mobile" id="headerCtaMobile" href="./gh-pages-seo-coverage/" data-i18n="nav.open_architecture">Ver arquitectura</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="qa-lang-switch" role="group" data-i18n-aria="nav.language" aria-label="Idioma">
+          <button type="button" class="qa-lang-switch__btn qa-lang-switch__btn--active" data-set-locale="es" aria-pressed="true">ES</button>
+          <button type="button" class="qa-lang-switch__btn" data-set-locale="en" aria-pressed="false">EN</button>
+        </div>
+        <a class="btn btn--primary header-cta-desktop" id="headerCta" href="./gh-pages-seo-coverage/" data-i18n="nav.open_architecture">Ver arquitectura</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero__eyebrow" id="heroEyebrow">White label · Multi-tenant BAAS</div>
+        <h1 class="hero__title" id="heroTitle">DevCoveragePlansEngine · <em>SEO Coverage</em></h1>
+        <p class="hero__lead" id="heroLead">
+          Este hub documenta el proceso de desarrollo de cada white label P2L. SEO Coverage Engine es el primero:
+          un producto empaquetado con sus planes de implementación en vista tipo PDF.
+        </p>
+        <div class="hero__ctas" role="tablist" data-i18n-aria="nav.tabs" aria-label="Elige un white label">
+          <button type="button" class="btn btn--primary btn--lg is-active" data-mode="seo" aria-pressed="true" data-i18n="modes.seo">SEO Coverage</button>
+          <button type="button" class="btn btn--outline btn--lg" data-mode="wpf" aria-pressed="false" data-i18n="modes.wpf">WPF Dashboard</button>
+          <button type="button" class="btn btn--outline btn--lg" data-mode="indigo" aria-pressed="false" data-i18n="modes.indigo">RPA IndiGO</button>
+          <button type="button" class="btn btn--outline btn--lg" data-mode="more" aria-pressed="false" data-i18n="modes.more">Más white labels</button>
+        </div>
+        <div class="hero__badges" id="heroBadges"></div>
+      </div>
+    </section>
+
+    <!-- SEO Coverage white label -->
+    <div class="mode-panel" data-panel="seo">
+      <section class="section section--alt" id="seo-overview">
+        <div class="container">
+          <div class="section__head">
+            <span class="wl-chip" data-i18n="seo.tag">White label</span>
+            <h2 data-i18n="seo.benefits_title" style="margin-top:12px">SEO Coverage Engine es white label</h2>
+            <p data-i18n="seo.benefits_lead">
+              No es solo un módulo: es un producto P2L con tenant propio, login dedicado, i18n ES/EN, planes ePayco y dashboard de auditorías SEO.
+            </p>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <div class="card__icon">🏷️</div>
+              <h3 data-i18n="seo.b1_title">Tenant y marca propios</h3>
+              <p data-i18n="seo.b1_text">API key, rutas /login/seo-coverage-dashboard y post-login al Coverage Score.</p>
+            </article>
+            <article class="card">
+              <div class="card__icon">💳</div>
+              <h3 data-i18n="seo.b2_title">Planes comerciales empaquetados</h3>
+              <p data-i18n="seo.b2_text">Gratis → Plan 1/2/3 con créditos de auditoría y checkout ePayco scoped.</p>
+            </article>
+            <article class="card">
+              <div class="card__icon">📄</div>
+              <h3 data-i18n="seo.b3_title">Cobertura de desarrollo en PDF</h3>
+              <p data-i18n="seo.b3_text">Planes de implementación en gh-pages-seo-coverage con visor Markdown → PDF.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="seo-process">
+        <div class="container">
+          <div class="section__head">
+            <h2 data-i18n="seo.process_title">Qué encontrarás en los planes</h2>
+            <p data-i18n="seo.process_lead">Abre el visor para leer cada plan como documento de ingeniería.</p>
+          </div>
+          <div class="cards">
+            <article class="phase">
+              <span class="phase__tag" data-i18n="seo.p1_tag">Fase 1</span>
+              <h3 data-i18n="seo.p1_title">Crawler + Coverage Score MVP</h3>
+              <p data-i18n="seo.p1_text">Dominio, crawl, analyzers, score agregado y hallazgos por URL.</p>
+            </article>
+            <article class="phase">
+              <span class="phase__tag" data-i18n="seo.p2_tag">Fase 2–3</span>
+              <h3 data-i18n="seo.p2_title">GSC, IA y roadmap</h3>
+              <p data-i18n="seo.p2_text">Import CSV GSC, diff cobertura, agente gpt-4o-mini, cupos y tareas.</p>
+            </article>
+            <article class="phase">
+              <span class="phase__tag" data-i18n="seo.p3_tag">Producto</span>
+              <h3 data-i18n="seo.p3_title">i18n + ePayco + UI</h3>
+              <p data-i18n="seo.p3_text">Locales ES/EN, packs de planes, acordeones y PDF por auditoría.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--alt" id="seo-cta">
+        <div class="container">
+          <div class="cta-box">
+            <h2 data-i18n="seo.cta_title">Abrir planes SEO Coverage (PDF)</h2>
+            <p data-i18n="seo.cta_text">
+              Entra al visor de Markdown en vista tipo PDF. Ahí está el historial de planes del white label SEO Coverage Engine.
+            </p>
+            <div class="cta-box__actions">
+              <a class="btn btn--primary btn--lg" id="seoPlansLink" href="./gh-pages-seo-coverage/" data-i18n="seo.cta_btn">Ver arquitectura SEO</a>
+              <a class="btn btn--outline btn--lg" id="seoProductLink" href="https://www.refactorii.com/p2l-tenant/login/seo-coverage-dashboard/es" data-i18n="seo.cta_product">Abrir producto (login)</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- WPF Dashboard white label -->
+    <div class="mode-panel" data-panel="wpf" hidden>
+      <section class="section section--alt" id="wpf-overview">
+        <div class="container">
+          <div class="section__head">
+            <span class="wl-chip" data-i18n="wpf.tag">White label</span>
+            <h2 data-i18n="wpf.benefits_title" style="margin-top:12px">WPF Dashboard es white label</h2>
+            <p data-i18n="wpf.benefits_lead">
+              Panel web P2L Desktop para licencias, wallet ePayco y conductores Google; el mapa AVL vive en el cliente .NET + Waze + SQL Server local.
+            </p>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <div class="card__icon">🖥️</div>
+              <h3 data-i18n="wpf.b1_title">Tenant p2l-wpf</h3>
+              <p data-i18n="wpf.b1_text">Login /login/dashboard-wpf → /dashboard-wpf (CompanyWpfDashboardView).</p>
+            </article>
+            <article class="card">
+              <div class="card__icon">💳</div>
+              <h3 data-i18n="wpf.b2_title">Wallet y planes ePayco</h3>
+              <p data-i18n="wpf.b2_text">Trial 5 días, Starter/Growth/Business/Enterprise y recargas scoped al tenant.</p>
+            </article>
+            <article class="card">
+              <div class="card__icon">🔑</div>
+              <h3 data-i18n="wpf.b3_title">Licencia + .env escritorio</h3>
+              <p data-i18n="wpf.b3_text">Clave one-shot, P2L_COMPANY_ID y plantilla .env para AvlMonitor.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="wpf-process">
+        <div class="container">
+          <div class="section__head">
+            <h2 data-i18n="wpf.process_title">Dinámica de usuario y planes</h2>
+            <p data-i18n="wpf.process_lead">Abre el visor para la cobertura de desarrollo del white label WPF Dashboard.</p>
+          </div>
+          <div class="cards">
+            <article class="phase">
+              <span class="phase__tag" data-i18n="wpf.p1_tag">Usuario</span>
+              <h3 data-i18n="wpf.p1_title">Alta, trial y miembros</h3>
+              <p data-i18n="wpf.p1_text">Google admin, empresa, clave, conductores Gmail y cupos diarios.</p>
+            </article>
+            <article class="phase">
+              <span class="phase__tag" data-i18n="wpf.p2_tag">Pagos</span>
+              <h3 data-i18n="wpf.p2_title">ePayco + wallet</h3>
+              <p data-i18n="wpf.p2_text">Recarga de plan, saldo COP, costo/viaje y reactivación post-trial.</p>
+            </article>
+            <article class="phase">
+              <span class="phase__tag" data-i18n="wpf.p3_tag">Escritorio</span>
+              <h3 data-i18n="wpf.p3_title">AvlMonitor + licencia</h3>
+              <p data-i18n="wpf.p3_text">Gate .env, Google ID token, SQL Server local y mapa Waze.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--alt" id="wpf-install">
+        <div class="container">
+          <div class="section__head">
+            <h2 data-i18n="wpf.install_title">App de escritorio, guía gratis y producto digital</h2>
+            <p data-i18n="wpf.install_lead">
+              El mapa AVL corre en Windows (cliente .NET). La guía de instalación es gratis; el ZIP AvlMonitor solo se descarga en el dashboard web tras pago ePayco — nunca desde este hub.
+            </p>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <div class="card__icon">📘</div>
+              <h3 data-i18n="wpf.install_b1_title">Guía gratis (también en el dashboard)</h3>
+              <p data-i18n="wpf.install_b1_text">
+                GUIA_INSTALACION.md visible aquí y gratis en /dashboard-wpf.
+              </p>
+            </article>
+            <article class="card">
+              <div class="card__icon">💳</div>
+              <h3 data-i18n="wpf.install_b2_title">Una sola card de pago: descarga AvlMonitor</h3>
+              <p data-i18n="wpf.install_b2_text">
+                En CompanyWpfDashboardView el único producto ePayco es «Descarga del AvlMonitor»; tras el pago se desbloquea el ZIP.
+              </p>
+            </article>
+            <article class="card">
+              <div class="card__icon">🚫</div>
+              <h3 data-i18n="wpf.install_b3_title">Este hub no sirve el ZIP</h3>
+              <p data-i18n="wpf.install_b3_text">
+                DevCoveragePlansEngine solo documenta dinámica y cobertura de desarrollo.
+              </p>
+            </article>
+          </div>
+          <div class="cta-box" style="margin-top:28px">
+            <h2 data-i18n="wpf.install_cta_title">Abrir guía de instalación (documentación)</h2>
+            <p data-i18n="wpf.install_cta_text">
+              Lee GUIA_INSTALACION.md en el visor. Para comprar/descargar el ZIP usa el login del producto WPF, no este sitio.
+            </p>
+            <div class="cta-box__actions">
+              <a class="btn btn--primary btn--lg" id="wpfInstallGuideLink" href="./gh-pages-wpf-dashboard-coverage/?plan=GUIA_INSTALACION.md" data-i18n="wpf.install_cta_btn">Ver GUIA_INSTALACION.md</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="wpf-cta">
+        <div class="container">
+          <div class="cta-box">
+            <h2 data-i18n="wpf.cta_title">Abrir arquitectura WPF Dashboard (PDF)</h2>
+            <p data-i18n="wpf.cta_text">
+              Entra al visor Markdown → PDF con los planes de desarrollo del white label WPF Dashboard.
+            </p>
+            <div class="cta-box__actions">
+              <a class="btn btn--primary btn--lg" id="wpfPlansLink" href="./gh-pages-wpf-dashboard-coverage/" data-i18n="wpf.cta_btn">Ver arquitectura WPF</a>
+              <a class="btn btn--outline btn--lg" id="wpfProductLink" href="https://www.refactorii.com/p2l-tenant/login/dashboard-wpf" data-i18n="wpf.cta_product">Abrir producto (login)</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- RPA IndiGO coverage -->
+    <div class="mode-panel" data-panel="indigo" hidden>
+      <section class="section section--alt" id="indigo-overview">
+        <div class="container">
+          <div class="section__head">
+            <span class="wl-chip" data-i18n="indigo.tag">Cobertura RPA</span>
+            <h2 data-i18n="indigo.benefits_title" style="margin-top:12px">Evolución RPA IndiGO → agente IA</h2>
+            <p data-i18n="indigo.benefits_lead">
+              Análisis, arquitectura y plan en dos fases: tablero front-herinco + telemetría Spring hacia 9 equipos Windows.
+            </p>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <div class="card__icon">🤖</div>
+              <h3 data-i18n="indigo.b1_title">Copiloto, no reemplazo</h3>
+              <p data-i18n="indigo.b1_text">IA propone acciones estructuradas; políticas y humano validan antes de actuar en el escritorio.</p>
+            </article>
+            <article class="card">
+              <div class="card__icon">📡</div>
+              <h3 data-i18n="indigo.b2_title">Solo HTTPS saliente</h3>
+              <p data-i18n="indigo.b2_text">Cada PC empuja telemetría; tiempo real STOMP/SockJS vive en el back central (sin Socket.IO en cada equipo).</p>
+            </article>
+            <article class="card">
+              <div class="card__icon">📄</div>
+              <h3 data-i18n="indigo.b3_title">Informe + plan + insumos</h3>
+              <p data-i18n="indigo.b3_text">Markdown → PDF en gh-pages-rpa-indigo-coverage con canvas, PDFs ejecutivos y evidencias de Fase 1.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="indigo-process">
+        <div class="container">
+          <div class="section__head">
+            <h2 data-i18n="indigo.process_title">Fases del plan</h2>
+            <p data-i18n="indigo.process_lead">Abre el visor para el informe de evolución y el plan del tablero RPA IndiGO.</p>
+          </div>
+          <div class="cards">
+            <article class="phase">
+              <span class="phase__tag" data-i18n="indigo.p1_tag">Fase 1</span>
+              <h3 data-i18n="indigo.p1_title">Tablero front-herinco</h3>
+              <p data-i18n="indigo.p1_text">UI flota/KPIs, consumo IA estilo Sabelotodo, STOMP mock y hooks de telemetría en el RPA (flag off).</p>
+            </article>
+            <article class="phase">
+              <span class="phase__tag" data-i18n="indigo.p2_tag">Fase 2</span>
+              <h3 data-i18n="indigo.p2_title">Spring + 9 RPA</h3>
+              <p data-i18n="indigo.p2_text">MSA ingest HTTP, broker STOMP, piloto 1 equipo e IA real; expansión a nueve PCs.</p>
+            </article>
+            <article class="phase">
+              <span class="phase__tag" data-i18n="indigo.p3_tag">Insumos</span>
+              <h3 data-i18n="indigo.p3_title">PDFs y canvas</h3>
+              <p data-i18n="indigo.p3_text">Perspectivas ejecutiva/arquitectura, draw.io y capturas de ejecución Fase 1.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--alt" id="indigo-cta">
+        <div class="container">
+          <div class="cta-box">
+            <h2 data-i18n="indigo.cta_title">Abrir arquitectura RPA IndiGO (PDF)</h2>
+            <p data-i18n="indigo.cta_text">
+              Entra al visor Markdown → PDF con el informe, el plan Fase 1–2 y el índice de insumos.
+            </p>
+            <div class="cta-box__actions">
+              <a class="btn btn--primary btn--lg" id="indigoPlansLink" href="./gh-pages-rpa-indigo-coverage/" data-i18n="indigo.cta_btn">Ver arquitectura IndiGO</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- More white labels (placeholder for future) -->
+    <div class="mode-panel" data-panel="more" hidden>
+      <section class="section section--alt" id="more-overview">
+        <div class="container">
+          <div class="section__head">
+            <h2 data-i18n="more.benefits_title">Cómo crece este repo</h2>
+            <p data-i18n="more.benefits_lead">
+              Cada white label nuevo suma un botón en el hero y una carpeta hermana con su index PDF + *.plan.md.
+            </p>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <div class="card__icon">1️⃣</div>
+              <h3 data-i18n="more.b1_title">1. Carpeta de planes</h3>
+              <p data-i18n="more.b1_text">Copia el esquema de gh-pages-seo-coverage.</p>
+            </article>
+            <article class="card">
+              <div class="card__icon">2️⃣</div>
+              <h3 data-i18n="more.b2_title">2. Botón de contenido</h3>
+              <p data-i18n="more.b2_text">Añade un modo en el hero que explique el white label.</p>
+            </article>
+            <article class="card">
+              <div class="card__icon">3️⃣</div>
+              <h3 data-i18n="more.b3_title">3. Publicar en Pages</h3>
+              <p data-i18n="more.b3_text">Index en la raíz; cada white label en su subcarpeta.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="more-cta">
+        <div class="container">
+          <div class="cta-box">
+            <h2 data-i18n="more.cta_title">Próximos white labels</h2>
+            <p data-i18n="more.cta_text">
+              Cuando agregues Tuki, Job Copilot u otros, aparecerán aquí con el mismo énfasis white label + PDF.
+            </p>
+            <div class="cta-box__actions">
+              <button type="button" class="btn btn--primary btn--lg" data-mode="seo" data-i18n="more.cta_btn">Volver a SEO Coverage</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <div class="footer__brand">DevCoveragePlansEngine</div>
+          <p style="margin:0; max-width:320px;" data-i18n="footer.blurb">
+            Cobertura del desarrollo de white labels P2L. Planes en PDF/Markdown para GitHub Pages.
+          </p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.labels">White labels</h4>
+          <ul>
+            <li><a href="#" data-mode="seo" data-i18n="modes.seo">SEO Coverage</a></li>
+            <li><a href="#" data-mode="wpf" data-i18n="modes.wpf">WPF Dashboard</a></li>
+            <li><a href="#" data-mode="indigo" data-i18n="modes.indigo">RPA IndiGO</a></li>
+            <li><a href="#" data-mode="more" data-i18n="modes.more">Más white labels</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 data-i18n="footer.process">Proceso</h4>
+          <ul>
+            <li><a id="footerSeoPlans" href="./gh-pages-seo-coverage/" data-i18n="seo.cta_btn">Ver arquitectura SEO</a></li>
+            <li><a id="footerWpfPlans" href="./gh-pages-wpf-dashboard-coverage/" data-i18n="wpf.cta_btn">Ver arquitectura WPF</a></li>
+            <li><a id="footerIndigoPlans" href="./gh-pages-rpa-indigo-coverage/" data-i18n="indigo.cta_btn">Ver arquitectura IndiGO</a></li>
+            <li><a id="footerActiveProduct" href="https://www.refactorii.com/p2l-tenant/login/seo-coverage-dashboard/es" data-i18n="seo.cta_product">Abrir producto (login)</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer__copy">© <span id="year"></span> <span data-i18n="footer.copy">DevCoveragePlansEngine · Powered by P2L</span></p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/i18next@23.4.6/i18next.min.js"></script>
+  <script src="scripts/locales-embed.js"></script>
+  <script src="scripts/i18n.js"></script>
+  <script>
+    const WHITE_LABEL_LINKS = {
+      seoCoveragePlans: './gh-pages-seo-coverage/',
+      wpfDashboardPlans: './gh-pages-wpf-dashboard-coverage/',
+      indigoPlans: './gh-pages-rpa-indigo-coverage/',
+      seoCoverageProduct: 'https://www.refactorii.com/p2l-tenant/login/seo-coverage-dashboard/es',
+      wpfDashboardProduct: 'https://www.refactorii.com/p2l-tenant/login/dashboard-wpf',
+      indigoProduct: './gh-pages-rpa-indigo-coverage/'
+    };
+
+    const MODE_META = {
+      seo: {
+        titleKey: 'meta.title_seo',
+        plansHref: WHITE_LABEL_LINKS.seoCoveragePlans,
+        productHref: WHITE_LABEL_LINKS.seoCoverageProduct,
+        productI18n: 'seo.cta_product',
+        navMap: { overview: 'seo-overview', process: 'seo-process', cta: 'seo-cta' }
+      },
+      wpf: {
+        titleKey: 'meta.title_wpf',
+        plansHref: WHITE_LABEL_LINKS.wpfDashboardPlans,
+        productHref: WHITE_LABEL_LINKS.wpfDashboardProduct,
+        productI18n: 'wpf.cta_product',
+        navMap: { overview: 'wpf-overview', process: 'wpf-install', cta: 'wpf-cta' }
+      },
+      indigo: {
+        titleKey: 'meta.title_indigo',
+        plansHref: WHITE_LABEL_LINKS.indigoPlans,
+        productHref: WHITE_LABEL_LINKS.indigoProduct,
+        productI18n: 'indigo.cta_btn',
+        navMap: { overview: 'indigo-overview', process: 'indigo-process', cta: 'indigo-cta' }
+      },
+      more: {
+        titleKey: 'meta.title',
+        plansHref: WHITE_LABEL_LINKS.seoCoveragePlans,
+        productHref: WHITE_LABEL_LINKS.seoCoverageProduct,
+        productI18n: 'seo.cta_product',
+        navMap: { overview: 'more-overview', process: 'more-overview', cta: 'more-cta' }
+      }
+    };
+
+    let currentMode = 'seo';
+    let i18nReady = false;
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const header = document.getElementById('header');
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.getElementById('mainNav');
+    const headerCta = document.getElementById('headerCta');
+    const headerCtaMobile = document.getElementById('headerCtaMobile');
+    const footerActiveProduct = document.getElementById('footerActiveProduct');
+
+    document.getElementById('seoPlansLink').href = WHITE_LABEL_LINKS.seoCoveragePlans;
+    document.getElementById('wpfPlansLink').href = WHITE_LABEL_LINKS.wpfDashboardPlans;
+    document.getElementById('indigoPlansLink').href = WHITE_LABEL_LINKS.indigoPlans;
+    document.getElementById('seoProductLink').href = WHITE_LABEL_LINKS.seoCoverageProduct;
+    document.getElementById('wpfProductLink').href = WHITE_LABEL_LINKS.wpfDashboardProduct;
+    document.getElementById('footerSeoPlans').href = WHITE_LABEL_LINKS.seoCoveragePlans;
+    document.getElementById('footerWpfPlans').href = WHITE_LABEL_LINKS.wpfDashboardPlans;
+    document.getElementById('footerIndigoPlans').href = WHITE_LABEL_LINKS.indigoPlans;
+    const wpfInstallGuideLink = document.getElementById('wpfInstallGuideLink');
+    if (wpfInstallGuideLink) {
+      wpfInstallGuideLink.href = WHITE_LABEL_LINKS.wpfDashboardPlans + '?plan=GUIA_INSTALACION.md';
+    }
+
+    function t(key, fallback) {
+      if (typeof i18next !== 'undefined' && i18next.isInitialized) {
+        const v = i18next.t(key, { returnObjects: true });
+        if (v != null && v !== key) return v;
+      }
+      return fallback != null ? fallback : null;
+    }
+
+    function getHeroCopy(mode) {
+      const prefix = `hero.${mode}`;
+      const badgesRaw = t(`${prefix}.badges`, []);
+      return {
+        eyebrow: t(`${prefix}.eyebrow`),
+        titleHtml: t(`${prefix}.title`),
+        lead: t(`${prefix}.lead`),
+        badges: Array.isArray(badgesRaw)
+          ? badgesRaw.map((b) => [b.icon || '', b.strong || '', b.rest || ''])
+          : [],
+        docTitle: t(MODE_META[mode].titleKey)
+      };
+    }
+
+    function setMode(mode, opts = {}) {
+      if (!MODE_META[mode]) mode = 'seo';
+      currentMode = mode;
+      const meta = MODE_META[mode];
+
+      document.body.dataset.mode = mode;
+      document.querySelectorAll('.mode-panel').forEach((panel) => {
+        panel.hidden = panel.getAttribute('data-panel') !== mode;
+      });
+      document.querySelectorAll('.hero__ctas [data-mode]').forEach((btn) => {
+        const active = btn.getAttribute('data-mode') === mode;
+        btn.classList.toggle('is-active', active);
+        btn.classList.toggle('btn--primary', active);
+        btn.classList.toggle('btn--outline', !active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+
+      headerCta.href = meta.plansHref;
+      headerCtaMobile.href = meta.plansHref;
+      if (footerActiveProduct) {
+        footerActiveProduct.href = meta.productHref;
+        footerActiveProduct.setAttribute('data-i18n', meta.productI18n);
+        const productLabel = t(meta.productI18n);
+        if (productLabel) footerActiveProduct.textContent = productLabel;
+      }
+
+      const archLabel = t('nav.open_architecture', 'Ver arquitectura');
+      headerCta.setAttribute('data-i18n', 'nav.open_architecture');
+      headerCtaMobile.setAttribute('data-i18n', 'nav.open_architecture');
+      if (archLabel) {
+        headerCta.textContent = archLabel;
+        headerCtaMobile.textContent = archLabel;
+      }
+
+      document.querySelectorAll('[data-nav]').forEach((link) => {
+        const key = link.getAttribute('data-nav');
+        const id = meta.navMap[key] || meta.navMap.overview;
+        link.setAttribute('href', `#${id}`);
+      });
+
+      if (!i18nReady && !(window.devCoverageI18n && window.devCoverageI18n.ready)) return;
+
+      const copy = getHeroCopy(mode);
+      if (copy.docTitle) {
+        document.title = copy.docTitle;
+        const titleEl = document.querySelector('title');
+        if (titleEl) {
+          titleEl.setAttribute('data-i18n', meta.titleKey);
+          titleEl.textContent = copy.docTitle;
+        }
+      }
+      if (copy.eyebrow) document.getElementById('heroEyebrow').textContent = copy.eyebrow;
+      if (copy.titleHtml) document.getElementById('heroTitle').innerHTML = copy.titleHtml;
+      if (copy.lead) document.getElementById('heroLead').textContent = copy.lead;
+      if (copy.badges.length) {
+        document.getElementById('heroBadges').innerHTML = copy.badges.map(([icon, strong, rest]) =>
+          `<span class="hero__badge">${icon} <strong>${strong}</strong> ${rest}</span>`
+        ).join('');
+      }
+
+      if (!opts.skipScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('[data-mode]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        const mode = el.getAttribute('data-mode');
+        if (!MODE_META[mode]) return;
+        e.preventDefault();
+        setMode(mode);
+        mainNav.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.textContent = '☰';
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+    }, { passive: true });
+
+    menuToggle.addEventListener('click', () => {
+      const open = mainNav.classList.toggle('is-open');
+      menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuToggle.textContent = open ? '✕' : '☰';
+    });
+
+    mainNav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mainNav.classList.remove('is-open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.textContent = '☰';
+      });
+    });
+
+    window.onDevCoverageI18nReady = function () {
+      i18nReady = true;
+      setMode(currentMode, { skipScroll: true });
+    };
+    window.onDevCoverageLocaleChange = function (_lang, opts) {
+      i18nReady = true;
+      setMode(currentMode, { skipScroll: !!(opts && opts.skipScroll) });
+    };
+
+    setMode('seo', { skipScroll: true });
+    if (window.devCoverageI18n && window.devCoverageI18n.ready) {
+      i18nReady = true;
+      setMode(currentMode, { skipScroll: true });
+    }
+  </script>
+</body>
+</html>

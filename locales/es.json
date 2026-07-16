@@ -1,0 +1,225 @@
+{
+  "meta": {
+    "title": "DevCoveragePlansEngine — Cobertura de planes white-label",
+    "title_seo": "SEO Coverage Engine — White label | DevCoveragePlansEngine",
+    "title_wpf": "WPF Dashboard — White label | DevCoveragePlansEngine",
+    "description": "DevCoveragePlansEngine documenta el proceso de desarrollo y los planes PDF de cada white label P2L: SEO Coverage, WPF Dashboard y RPA IndiGO.",
+    "title_indigo": "RPA IndiGO — Evolución a agente IA | DevCoveragePlansEngine"
+  },
+  "nav": {
+    "home": "DevCoveragePlansEngine inicio",
+    "main": "Principal",
+    "language": "Idioma",
+    "overview": "Visión",
+    "labels": "White labels",
+    "process": "Proceso",
+    "open_plans": "Ver planes PDF",
+    "open_architecture": "Ver arquitectura",
+    "menu_open": "Abrir menú",
+    "menu_close": "Cerrar menú",
+    "tabs": "Elige un white label"
+  },
+  "modes": {
+    "seo": "SEO Coverage",
+    "wpf": "WPF Dashboard",
+    "more": "Más white labels",
+    "indigo": "RPA IndiGO"
+  },
+  "hero": {
+    "seo": {
+      "eyebrow": "White label · Multi-tenant BAAS",
+      "title": "DevCoveragePlansEngine · <em>SEO Coverage</em>",
+      "lead": "Este hub documenta el proceso de desarrollo de cada white label P2L. SEO Coverage Engine es un producto empaquetado (tenant, login, planes ePayco, dashboard) con sus planes de implementación en vista tipo PDF.",
+      "badges": [
+        {
+          "icon": "🏷️",
+          "strong": "White label",
+          "rest": "marca y tenant propios"
+        },
+        {
+          "icon": "📄",
+          "strong": "Planes PDF",
+          "rest": "Markdown → visor"
+        },
+        {
+          "icon": "🧩",
+          "strong": "Fases",
+          "rest": "1 → 2–3 → producto"
+        }
+      ]
+    },
+    "wpf": {
+      "eyebrow": "White label · P2L Desktop",
+      "title": "DevCoveragePlansEngine · <em>WPF Dashboard</em>",
+      "lead": "Panel web P2L Desktop: guía de instalación gratis, una card ePayco «Descarga del AvlMonitor» y ZIP solo tras pago. Este hub documenta la dinámica; no entrega el comprimido.",
+      "badges": [
+        {
+          "icon": "🖥️",
+          "strong": "Tenant",
+          "rest": "p2l-wpf"
+        },
+        {
+          "icon": "💳",
+          "strong": "Wallet",
+          "rest": "planes ePayco"
+        },
+        {
+          "icon": "🔑",
+          "strong": "Licencia",
+          "rest": ".env escritorio"
+        }
+      ]
+    },
+    "more": {
+      "eyebrow": "Roadmap · Cobertura multi-producto",
+      "title": "Más white labels en <em>DevCoveragePlansEngine</em>",
+      "lead": "Aquí irán entrando otros white labels con su carpeta de planes (mismo esquema: index PDF + markdown de fases). Así ves todo el proceso de desarrollo en un solo repo de GitHub Pages.",
+      "badges": [
+        {
+          "icon": "📁",
+          "strong": "Una carpeta",
+          "rest": "por white label"
+        },
+        {
+          "icon": "🔗",
+          "strong": "Un botón",
+          "rest": "cambia el contenido"
+        },
+        {
+          "icon": "🧭",
+          "strong": "Misma dinámica",
+          "rest": "ES/EN + PDF"
+        }
+      ]
+    },
+    "indigo": {
+      "eyebrow": "Cobertura · RPA + agente IA",
+      "title": "DevCoveragePlansEngine · <em>RPA IndiGO</em>",
+      "lead": "Análisis de factibilidad, arquitectura y plan en dos fases para evolucionar el RPA IndiGO a un agente de IA supervisado, con tablero front-herinco y telemetría central.",
+      "badges": [
+        {
+          "icon": "🤖",
+          "strong": "Copiloto",
+          "rest": "IA + políticas"
+        },
+        {
+          "icon": "📡",
+          "strong": "Telemetría",
+          "rest": "HTTPS saliente"
+        },
+        {
+          "icon": "📄",
+          "strong": "Planes PDF",
+          "rest": "informe + Fase 1–2"
+        }
+      ]
+    }
+  },
+  "seo": {
+    "tag": "White label",
+    "benefits_title": "SEO Coverage Engine es white label",
+    "benefits_lead": "No es solo un módulo: es un producto P2L con tenant propio (p2l-seo-coverage), login dedicado, i18n ES/EN, planes ePayco y dashboard de auditorías SEO.",
+    "b1_title": "Tenant y marca propios",
+    "b1_text": "API key, rutas /login/seo-coverage-dashboard y post-login al Coverage Score. Misma plataforma BAAS, identidad comercial separada.",
+    "b2_title": "Planes comerciales empaquetados",
+    "b2_text": "Gratis → Plan 1/2/3 con créditos de auditoría, precios COP/USD y checkout ePayco scoped al tenant SEO.",
+    "b3_title": "Cobertura de desarrollo en PDF",
+    "b3_text": "Los planes de implementación (Fase 1, 2–3, i18n/ePayco, visión) viven en gh-pages-seo-coverage con visor Markdown → PDF.",
+    "process_title": "Qué encontrarás en los planes",
+    "process_lead": "Abre el visor para leer cada plan como documento de ingeniería: alcance, entregables y cómo quedó implementado.",
+    "p1_tag": "Fase 1",
+    "p1_title": "Crawler + Coverage Score MVP",
+    "p1_text": "Dominio, crawl, analyzers, score agregado y hallazgos por URL.",
+    "p2_tag": "Fase 2–3",
+    "p2_title": "GSC, IA y roadmap",
+    "p2_text": "Import CSV GSC, diff cobertura, agente gpt-4o-mini, cupos y tareas.",
+    "p3_tag": "Producto",
+    "p3_title": "i18n + ePayco + UI",
+    "p3_text": "Locales ES/EN, packs de planes, acordeones mobile-first y PDF por auditoría.",
+    "cta_title": "Abrir arquitectura SEO Coverage (PDF)",
+    "cta_text": "Entra al visor de Markdown en vista tipo PDF. Ahí está el historial de planes del white label SEO Coverage Engine.",
+    "cta_btn": "Ver arquitectura SEO",
+    "cta_product": "Abrir producto (login)"
+  },
+  "wpf": {
+    "tag": "White label",
+    "benefits_title": "WPF Dashboard es white label",
+    "benefits_lead": "Producto P2L Desktop (tenant p2l-wpf): el admin gestiona licencias y pagos en la web; el monitoreo AVL corre en el cliente .NET WPF con Waze y SQL Server local.",
+    "b1_title": "Tenant y rutas propias",
+    "b1_text": "Login /login/dashboard-wpf, post-login a /dashboard-wpf (CompanyWpfDashboardView) y API /api/p2l-wpf.",
+    "b2_title": "Wallet y planes ePayco",
+    "b2_text": "Trial 5 días, Starter/Growth/Business/Enterprise, saldo COP y checkout scoped al tenant WPF.",
+    "b3_title": "Licencia para escritorio",
+    "b3_text": "Clave one-shot, P2L_COMPANY_ID y plantilla .env para AvlMonitor (Google + companyId/key).",
+    "process_title": "Dinámica de usuario y cobertura",
+    "process_lead": "Los planes documentan el flujo del dashboard Vue y el acoplamiento con el cliente .NET.",
+    "p1_tag": "Usuario",
+    "p1_title": "Alta, trial y miembros",
+    "p1_text": "Google admin, crear empresa, clave, conductores Gmail y cupos diarios.",
+    "p2_tag": "Pagos",
+    "p2_title": "ePayco + wallet",
+    "p2_text": "Recarga de plan, costo por viaje y reactivación cuando termina el trial.",
+    "p3_tag": "Escritorio",
+    "p3_title": "AvlMonitor + licencia",
+    "p3_text": "Gate .env, validación de licencia y mapa Waze sobre SQL Server local.",
+    "install_title": "App de escritorio, guía gratis y producto digital",
+    "install_lead": "El mapa AVL corre en Windows (cliente .NET). La guía de instalación es gratis; el ZIP AvlMonitor solo se descarga en el dashboard web tras pago ePayco — nunca desde este hub.",
+    "install_b1_title": "Guía gratis (también en el dashboard)",
+    "install_b1_text": "GUIA_INSTALACION.md: Windows, .NET 8, WebView2, SQL Server, .env y start-dev. Visible aquí en el visor y gratis en /dashboard-wpf.",
+    "install_b2_title": "Una sola card de pago: descarga AvlMonitor",
+    "install_b2_text": "En CompanyWpfDashboardView el único producto ePayco es «Descarga del AvlMonitor». Tras el pago se desbloquea AvlMonitor.zip autenticado en la API p2l-wpf.",
+    "install_b3_title": "Este hub no sirve el ZIP",
+    "install_b3_text": "DevCoveragePlansEngine solo documenta la dinámica y el proceso de desarrollo. El archivo comprimido vive en el backend (modelos_back/assets/p2l-wpf) y se descarga solo con empresa pagada.",
+    "install_cta_title": "Abrir guía de instalación (documentación)",
+    "install_cta_text": "Lee GUIA_INSTALACION.md en el visor. Para comprar/descargar el ZIP usa el login del producto WPF, no este sitio.",
+    "install_cta_btn": "Ver GUIA_INSTALACION.md",
+    "cta_title": "Abrir arquitectura WPF Dashboard (PDF)",
+    "cta_text": "Planes de desarrollo + guía de instalación. El ZIP de AvlMonitor no se publica aquí: es producto digital del dashboard tras ePayco.",
+    "cta_btn": "Ver arquitectura WPF",
+    "cta_product": "Abrir producto (login)"
+  },
+  "more": {
+    "benefits_title": "Cómo crece este repo",
+    "benefits_lead": "Cada white label nuevo suma un botón en el hero y una carpeta hermana con su index PDF + *.plan.md. DevCoveragePlansEngine es el índice de cobertura.",
+    "b1_title": "1. Carpeta de planes",
+    "b1_text": "Copia el esquema de gh-pages-seo-coverage o gh-pages-wpf-dashboard-coverage: index.html visor + markdown de fases.",
+    "b2_title": "2. Botón de contenido",
+    "b2_text": "Añade un modo en el hero (como SEO Coverage / WPF Dashboard) que explique el white label y enlace a su carpeta PDF.",
+    "b3_title": "3. Publicar en Pages",
+    "b3_text": "El index de DevCoveragePlansEngine queda en la raíz de gh-pages; cada white label en su subcarpeta.",
+    "cta_title": "Próximos white labels",
+    "cta_text": "Cuando agregues Tuki, Job Copilot u otros, aparecerán aquí con el mismo énfasis: producto white label + proceso de desarrollo en PDF.",
+    "cta_btn": "Volver a SEO Coverage"
+  },
+  "footer": {
+    "blurb": "DevCoveragePlansEngine — cobertura del desarrollo de white labels P2L. Planes en formato PDF/Markdown para GitHub Pages.",
+    "labels": "White labels",
+    "process": "Proceso",
+    "copy": "DevCoveragePlansEngine · Powered by P2L"
+  },
+  "indigo": {
+    "tag": "Cobertura RPA",
+    "benefits_title": "Evolución RPA IndiGO → agente IA",
+    "benefits_lead": "Análisis, arquitectura y plan en dos fases: tablero front-herinco + telemetría Spring hacia 9 equipos Windows. La IA actúa como copiloto validado por políticas.",
+    "b1_title": "Copiloto, no reemplazo",
+    "b1_text": "IA propone acciones estructuradas; un motor de políticas y el humano validan antes de clics o comandos en el escritorio.",
+    "b2_title": "Solo HTTPS saliente",
+    "b2_text": "Cada PC empuja telemetría; el tiempo real STOMP/SockJS vive en el back central (sin Socket.IO en cada equipo).",
+    "b3_title": "Informe + plan + insumos",
+    "b3_text": "Markdown → PDF en gh-pages-rpa-indigo-coverage con canvas, PDFs ejecutivos y evidencias de Fase 1.",
+    "process_title": "Fases del plan",
+    "process_lead": "Abre el visor para el informe de evolución y el plan del tablero RPA IndiGO.",
+    "p1_tag": "Fase 1",
+    "p1_title": "Tablero front-herinco",
+    "p1_text": "UI flota/KPIs, consumo IA estilo Sabelotodo, STOMP mock y hooks de telemetría en el RPA (flag off).",
+    "p2_tag": "Fase 2",
+    "p2_title": "Spring + 9 RPA",
+    "p2_text": "MSA ingest HTTP, broker STOMP, piloto 1 equipo e IA real; expansión a nueve PCs.",
+    "p3_tag": "Insumos",
+    "p3_title": "PDFs y canvas",
+    "p3_text": "Perspectivas ejecutiva/arquitectura, draw.io y capturas de ejecución Fase 1.",
+    "cta_title": "Abrir arquitectura RPA IndiGO (PDF)",
+    "cta_text": "Entra al visor Markdown → PDF con el informe, el plan Fase 1–2 y el índice de insumos.",
+    "cta_btn": "Ver arquitectura IndiGO"
+  }
+}

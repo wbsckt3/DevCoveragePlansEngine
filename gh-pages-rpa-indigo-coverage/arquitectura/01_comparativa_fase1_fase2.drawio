@@ -1,0 +1,70 @@
+<mxfile host="app.diagrams.net" modified="2026-07-16T19:00:00.000Z" agent="Cursor" version="24.0.0" type="device">
+  <diagram id="comparativa" name="Comparativa Fase1 vs Fase2">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="&lt;b&gt;Arquitectura RPA IndiGO — Comparativa de fases&lt;/b&gt;&lt;br&gt;Tiempo real en el back central · HTTP saliente desde cada PC · Sin Socket.IO en equipos" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="1200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="f1box" value="FASE 1 — ahora (front + contrato)" style="swimlane;startSize=36;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="680" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="f1front" value="front-herinco Vue2&#xa;Menú RPAs → RPA IndiGO" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="f1box">
+          <mxGeometry x="40" y="60" width="200" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="f1ui" value="IndigoDashboard&#xa;Flota · KPIs · Incidentes&#xa;Standby · Informes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="f1box">
+          <mxGeometry x="280" y="50" width="180" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="f1ai" value="Consumo IA&#xa;estilo Sabelotodo&#xa;gpt-4o-mini (mock)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="f1box">
+          <mxGeometry x="500" y="50" width="150" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="f1rt" value="Capa STOMP/SockJS&#xa;rpaIndigoRealtime.js&#xa;+ simulador mock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="f1box">
+          <mxGeometry x="280" y="180" width="180" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="f1hooks" value="RPA Python&#xa;telemetry/ hooks&#xa;flag OFF (sin envío)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="f1box">
+          <mxGeometry x="280" y="320" width="180" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="f1note" value="Entrega: tablero usable en demo.&#xa;Controles remotos deshabilitados/mock.&#xa;Sin Spring Boot obligatorio." style="shape=note;whiteSpace=wrap;html=1;size=14;fillColor=#f5f5f5;strokeColor=#666666;align=left;spacingLeft=8;" vertex="1" parent="f1box">
+          <mxGeometry x="40" y="400" width="280" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;strokeColor=#d6b656;" edge="1" parent="f1box" source="f1front" target="f1ui"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;strokeColor=#9673a6;" edge="1" parent="f1box" source="f1ui" target="f1ai"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;strokeColor=#82b366;" edge="1" parent="f1box" source="f1ui" target="f1rt"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=open;dashed=1;strokeColor=#b85450;" edge="1" parent="f1box" source="f1hooks" target="f1rt"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f2box" value="FASE 2 — después (Spring Boot + 9 RPA)" style="swimlane;startSize=36;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="860" y="90" width="680" height="520" as="geometry"/>
+        </mxCell>
+        <mxCell id="f2agents" value="9 RPA IndiGO&#xa;HTTPS saliente&#xa;start → notify → end" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="f2box">
+          <mxGeometry x="40" y="80" width="180" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="f2api" value="Spring Boot MSA&#xa;POST ingest&#xa;+ REST lectura" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="f2box">
+          <mxGeometry x="280" y="80" width="160" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="f2broker" value="Broker STOMP/SockJS&#xa;/topic/rpa-indigo/{empresa}&#xa;tiempo real CENTRAL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="f2box">
+          <mxGeometry x="500" y="80" width="150" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="f2ai" value="Azure gpt-4o-mini&#xa;inferencia + cuotas&#xa;(desde el back)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="f2box">
+          <mxGeometry x="280" y="220" width="160" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="f2pdf" value="PDFs en carpetas locales&#xa;por E.S.E. · sin BD de archivos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="f2box">
+          <mxGeometry x="40" y="220" width="180" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="f2front" value="front-herinco&#xa;recibe eventos vivos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="f2box">
+          <mxGeometry x="500" y="220" width="150" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="f2note" value="Patrón = RpaExtraccionZipCorreoSesiones&#xa;STOMP vive en el SERVIDOR.&#xa;No hay signaling server en cada PC." style="shape=note;whiteSpace=wrap;html=1;size=14;fillColor=#f5f5f5;strokeColor=#666666;align=left;spacingLeft=8;" vertex="1" parent="f2box">
+          <mxGeometry x="40" y="360" width="360" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#b85450;strokeWidth=2;" edge="1" parent="f2box" source="f2agents" target="f2api"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#6c8ebf;strokeWidth=2;" edge="1" parent="f2box" source="f2api" target="f2broker"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#9673a6;" edge="1" parent="f2box" source="f2api" target="f2ai"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#82b366;strokeWidth=2;" edge="1" parent="f2box" source="f2broker" target="f2front"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;dashed=1;strokeColor=#666666;" edge="1" parent="f2box" source="f2agents" target="f2pdf"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="bridge" value="conectar&#xa;contrato vivo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="740" y="300" width="100" height="60" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
